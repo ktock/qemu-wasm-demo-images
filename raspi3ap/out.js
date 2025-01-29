@@ -490,8 +490,10 @@ function instantiate_wasm() {
  const tb_ptr = memory_v.getInt32(Module.__wasm32_tb.tb_ptr_ptr, true);
  const export_vec_size = memory_v.getInt32(tb_ptr + 4, true);
  const export_vec_begin = tb_ptr + 4 + 4;
- const tmp_body_size = memory_v.getInt32(export_vec_begin + export_vec_size, true);
- const tmp_body_begin = export_vec_begin + export_vec_size + 4;
+ const counter_vec_size = memory_v.getInt32(export_vec_begin + export_vec_size, true);
+ const counter_vec_begin = export_vec_begin + export_vec_size + 4;
+ const tmp_body_size = memory_v.getInt32(counter_vec_begin + counter_vec_size, true);
+ const tmp_body_begin = counter_vec_begin + counter_vec_size + 4;
  const wasm_size = memory_v.getInt32(tmp_body_begin + tmp_body_size, true);
  const wasm_begin = tmp_body_begin + tmp_body_size + 4;
  const import_vec_size = memory_v.getInt32(wasm_begin + wasm_size, true);
@@ -508,25 +510,34 @@ function instantiate_wasm() {
   },
   "helper": helper
  });
- var ptr = export_vec_begin + 4 * Module.__wasm32_tb.cur_core_num;
+ Module.__wasm32_tb.inst_gc_registry.register(inst, "instance");
  const fidx = addFunction(inst.exports.start, "ii");
- memory_v.setUint32(ptr, fidx, true);
- const remove_n = memory_v.getInt32(Module.__wasm32_tb.to_remove_instance_idx_ptr, true);
- if (remove_n > 500) {
-  for (var i = 0; i < remove_n * 4; i += 4) {
-   removeFunction(memory_v.getInt32(Module.__wasm32_tb.to_remove_instance_ptr + i, true));
-  }
-  memory_v.setInt32(Module.__wasm32_tb.to_remove_instance_idx_ptr, 0, true);
- }
- return 0;
+ return fidx;
 }
 
-function init_wasm32_js(tb_ptr_ptr, cur_core_num, to_remove_instance_ptr, to_remove_instance_idx_ptr) {
+function remove_module_js() {
+ const memory_v = new DataView(HEAP8.buffer);
+ const remove_n = memory_v.getInt32(Module.__wasm32_tb.to_remove_instance_idx_ptr, true);
+ for (var i = 0; i < remove_n * 4; i += 4) {
+  removeFunction(memory_v.getInt32(Module.__wasm32_tb.to_remove_instance_ptr + i, true));
+ }
+ memory_v.setInt32(Module.__wasm32_tb.to_remove_instance_idx_ptr, 0, true);
+}
+
+function init_wasm32_js(tb_ptr_ptr, cur_core_num, to_remove_instance_ptr, to_remove_instance_idx_ptr, instance_garbage_collected_ptr) {
  Module.__wasm32_tb = {
   tb_ptr_ptr: tb_ptr_ptr,
   cur_core_num: cur_core_num,
   to_remove_instance_ptr: to_remove_instance_ptr,
-  to_remove_instance_idx_ptr: to_remove_instance_idx_ptr
+  to_remove_instance_idx_ptr: to_remove_instance_idx_ptr,
+  instance_garbage_collected_ptr: instance_garbage_collected_ptr,
+  inst_gc_registry: new FinalizationRegistry(i => {
+   if (i == "instance") {
+    const memory_v = new DataView(HEAP8.buffer);
+    let v = memory_v.getInt32(Module.__wasm32_tb.instance_garbage_collected_ptr, true);
+    memory_v.setInt32(Module.__wasm32_tb.instance_garbage_collected_ptr, v + 1, true);
+   }
+  })
  };
 }
 
@@ -6125,6 +6136,18 @@ function _emscripten_resize_heap(requestedSize) {
 
 var _emscripten_runtime_keepalive_check = keepRuntimeAlive;
 
+/** @param {number=} timeout */ var safeSetTimeout = (func, timeout) => {
+ runtimeKeepalivePush();
+ return setTimeout(() => {
+  runtimeKeepalivePop();
+  callUserCallback(func);
+ }, timeout);
+};
+
+var _emscripten_sleep = ms => Asyncify.handleSleep(wakeUp => safeSetTimeout(wakeUp, ms));
+
+_emscripten_sleep.isAsync = true;
+
 var ENV = {
  TERM: "xterm-256color"
 };
@@ -7158,6 +7181,7 @@ var wasmImports = {
  /** @export */ emscripten_num_logical_cores: _emscripten_num_logical_cores,
  /** @export */ emscripten_resize_heap: _emscripten_resize_heap,
  /** @export */ emscripten_runtime_keepalive_check: _emscripten_runtime_keepalive_check,
+ /** @export */ emscripten_sleep: _emscripten_sleep,
  /** @export */ environ_get: _environ_get,
  /** @export */ environ_sizes_get: _environ_sizes_get,
  /** @export */ exit: _exit,
@@ -7192,6 +7216,7 @@ var wasmImports = {
  /** @export */ invoke_viiiji: invoke_viiiji,
  /** @export */ memory: wasmMemory || Module["wasmMemory"],
  /** @export */ proc_exit: _proc_exit,
+ /** @export */ remove_module_js: remove_module_js,
  /** @export */ strftime: _strftime,
  /** @export */ system: _system
 };
@@ -7478,9 +7503,9 @@ var _asyncify_start_rewind = a0 => (_asyncify_start_rewind = wasmExports["asynci
 
 var _asyncify_stop_rewind = () => (_asyncify_stop_rewind = wasmExports["asyncify_stop_rewind"])();
 
-var ___start_em_js = Module["___start_em_js"] = 8520616;
+var ___start_em_js = Module["___start_em_js"] = 8641384;
 
-var ___stop_em_js = Module["___stop_em_js"] = 8532755;
+var ___stop_em_js = Module["___stop_em_js"] = 8654066;
 
 function invoke_ii(index, a1) {
  var sp = stackSave();

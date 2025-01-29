@@ -174,7 +174,7 @@ Module['FS_createPath']("/", "pack", true, true);
     }
 
     }
-    loadPackage({"files": [{"filename": "/pack/bcm2710-rpi-3-b-plus.dtb", "start": 0, "end": 32753}, {"filename": "/pack/kernel8.img", "start": 32753, "end": 22440433}, {"filename": "/pack/rootfs.bin", "start": 22440433, "end": 26634737}], "remote_package_size": 26634737});
+    loadPackage({"files": [{"filename": "/pack/bcm2710-rpi-3-b-plus.dtb", "start": 0, "end": 32753}, {"filename": "/pack/kernel8.img", "start": 32753, "end": 22505969}, {"filename": "/pack/rootfs.bin", "start": 22505969, "end": 26700273}], "remote_package_size": 26700273});
 
   })();
 
