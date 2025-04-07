@@ -115,7 +115,7 @@ function handleMessage(e) {
 
       Module['ENVIRONMENT_IS_PTHREAD'] = true;
 
-      (e.data.urlOrBlob ? import(e.data.urlOrBlob) : import('./qemu-system-aarch64'))
+      (e.data.urlOrBlob ? import(e.data.urlOrBlob) : import('./qemu-system-aarch64.js'))
       .then(exports => exports.default(Module));
     } else if (e.data.cmd === 'run') {
       // Pass the thread address to wasm to store it for fast access.

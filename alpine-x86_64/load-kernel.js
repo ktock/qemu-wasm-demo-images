@@ -174,7 +174,7 @@ Module['FS_createPath']("/", "pack-kernel", true, true);
     }
 
     }
-    loadPackage({"files": [{"filename": "/pack-kernel/vmlinuz-virt", "start": 0, "end": 11629568}], "remote_package_size": 11629568});
+    loadPackage({"files": [{"filename": "/pack-kernel/vmlinuz-virt", "start": 0, "end": 11645952}], "remote_package_size": 11645952});
 
   })();
 
