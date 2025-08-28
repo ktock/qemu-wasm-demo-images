@@ -7178,11 +7178,9 @@ var wasmImports = {
  /** @export */ getnameinfo: _getnameinfo,
  /** @export */ init_wasm32_js: init_wasm32_js,
  /** @export */ instantiate_wasm: instantiate_wasm,
- /** @export */ invoke_i: invoke_i,
  /** @export */ invoke_ii: invoke_ii,
  /** @export */ invoke_iii: invoke_iii,
  /** @export */ invoke_iiii: invoke_iiii,
- /** @export */ invoke_iiiiii: invoke_iiiiii,
  /** @export */ invoke_iiij: invoke_iiij,
  /** @export */ invoke_iijjii: invoke_iijjii,
  /** @export */ invoke_ji: invoke_ji,
@@ -7271,13 +7269,13 @@ var dynCall_vi = Module["dynCall_vi"] = (a0, a1) => (dynCall_vi = Module["dynCal
 
 var dynCall_vii = Module["dynCall_vii"] = (a0, a1, a2) => (dynCall_vii = Module["dynCall_vii"] = wasmExports["dynCall_vii"])(a0, a1, a2);
 
-var dynCall_iji = Module["dynCall_iji"] = (a0, a1, a2) => (dynCall_iji = Module["dynCall_iji"] = wasmExports["dynCall_iji"])(a0, a1, a2);
-
-var dynCall_viji = Module["dynCall_viji"] = (a0, a1, a2, a3) => (dynCall_viji = Module["dynCall_viji"] = wasmExports["dynCall_viji"])(a0, a1, a2, a3);
-
 var dynCall_vji = Module["dynCall_vji"] = (a0, a1, a2) => (dynCall_vji = Module["dynCall_vji"] = wasmExports["dynCall_vji"])(a0, a1, a2);
 
 var dynCall_ijiii = Module["dynCall_ijiii"] = (a0, a1, a2, a3, a4) => (dynCall_ijiii = Module["dynCall_ijiii"] = wasmExports["dynCall_ijiii"])(a0, a1, a2, a3, a4);
+
+var dynCall_iji = Module["dynCall_iji"] = (a0, a1, a2) => (dynCall_iji = Module["dynCall_iji"] = wasmExports["dynCall_iji"])(a0, a1, a2);
+
+var dynCall_viji = Module["dynCall_viji"] = (a0, a1, a2, a3) => (dynCall_viji = Module["dynCall_viji"] = wasmExports["dynCall_viji"])(a0, a1, a2, a3);
 
 var dynCall_iii = Module["dynCall_iii"] = (a0, a1, a2) => (dynCall_iii = Module["dynCall_iii"] = wasmExports["dynCall_iii"])(a0, a1, a2);
 
@@ -7403,7 +7401,15 @@ var dynCall_viiiij = Module["dynCall_viiiij"] = (a0, a1, a2, a3, a4, a5) => (dyn
 
 var dynCall_jijjiiii = Module["dynCall_jijjiiii"] = (a0, a1, a2, a3, a4, a5, a6, a7) => (dynCall_jijjiiii = Module["dynCall_jijjiiii"] = wasmExports["dynCall_jijjiiii"])(a0, a1, a2, a3, a4, a5, a6, a7);
 
+var dynCall_vjii = Module["dynCall_vjii"] = (a0, a1, a2, a3) => (dynCall_vjii = Module["dynCall_vjii"] = wasmExports["dynCall_vjii"])(a0, a1, a2, a3);
+
+var dynCall_jjjjii = Module["dynCall_jjjjii"] = (a0, a1, a2, a3, a4, a5) => (dynCall_jjjjii = Module["dynCall_jjjjii"] = wasmExports["dynCall_jjjjii"])(a0, a1, a2, a3, a4, a5);
+
 var dynCall_iijiiiji = Module["dynCall_iijiiiji"] = (a0, a1, a2, a3, a4, a5, a6, a7) => (dynCall_iijiiiji = Module["dynCall_iijiiiji"] = wasmExports["dynCall_iijiiiji"])(a0, a1, a2, a3, a4, a5, a6, a7);
+
+var dynCall_fff = Module["dynCall_fff"] = (a0, a1, a2) => (dynCall_fff = Module["dynCall_fff"] = wasmExports["dynCall_fff"])(a0, a1, a2);
+
+var dynCall_ddd = Module["dynCall_ddd"] = (a0, a1, a2) => (dynCall_ddd = Module["dynCall_ddd"] = wasmExports["dynCall_ddd"])(a0, a1, a2);
 
 var dynCall_jijjji = Module["dynCall_jijjji"] = (a0, a1, a2, a3, a4, a5) => (dynCall_jijjji = Module["dynCall_jijjji"] = wasmExports["dynCall_jijjji"])(a0, a1, a2, a3, a4, a5);
 
@@ -7443,9 +7449,9 @@ var _asyncify_start_rewind = a0 => (_asyncify_start_rewind = wasmExports["asynci
 
 var _asyncify_stop_rewind = () => (_asyncify_stop_rewind = wasmExports["asyncify_stop_rewind"])();
 
-var ___start_em_js = Module["___start_em_js"] = 8631712;
+var ___start_em_js = Module["___start_em_js"] = 8632560;
 
-var ___stop_em_js = Module["___stop_em_js"] = 8644417;
+var ___stop_em_js = Module["___stop_em_js"] = 8645265;
 
 function invoke_ii(index, a1) {
  var sp = stackSave();
@@ -7503,43 +7509,10 @@ function invoke_iijjii(index, a1, a2, a3, a4, a5) {
  }
 }
 
-function invoke_iiiiii(index, a1, a2, a3, a4, a5) {
- var sp = stackSave();
- try {
-  return dynCall_iiiiii(index, a1, a2, a3, a4, a5);
- } catch (e) {
-  stackRestore(sp);
-  if (e !== e + 0) throw e;
-  _setThrew(1, 0);
- }
-}
-
 function invoke_vi(index, a1) {
  var sp = stackSave();
  try {
   dynCall_vi(index, a1);
- } catch (e) {
-  stackRestore(sp);
-  if (e !== e + 0) throw e;
-  _setThrew(1, 0);
- }
-}
-
-function invoke_iii(index, a1, a2) {
- var sp = stackSave();
- try {
-  return dynCall_iii(index, a1, a2);
- } catch (e) {
-  stackRestore(sp);
-  if (e !== e + 0) throw e;
-  _setThrew(1, 0);
- }
-}
-
-function invoke_i(index) {
- var sp = stackSave();
- try {
-  return dynCall_i(index);
  } catch (e) {
   stackRestore(sp);
   if (e !== e + 0) throw e;
@@ -7562,6 +7535,17 @@ function invoke_iiii(index, a1, a2, a3) {
  var sp = stackSave();
  try {
   return dynCall_iiii(index, a1, a2, a3);
+ } catch (e) {
+  stackRestore(sp);
+  if (e !== e + 0) throw e;
+  _setThrew(1, 0);
+ }
+}
+
+function invoke_iii(index, a1, a2) {
+ var sp = stackSave();
+ try {
+  return dynCall_iii(index, a1, a2);
  } catch (e) {
   stackRestore(sp);
   if (e !== e + 0) throw e;
